@@ -50,61 +50,76 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
     <script>
-        // Function to handle paste events
-        document.getElementById('messageInput').addEventListener('paste', function(event) {
-            handleMedia(event.clipboardData.items);
-        });
-    
-        // Function to handle drop events
-        document.getElementById('messageInput').addEventListener('drop', function(event) {
-            event.preventDefault(); // Prevent default handling of the data
-            handleMedia(event.dataTransfer.items);
-        });
-    
-        // Prevent default dragover behavior
-        document.getElementById('messageInput').addEventListener('dragover', function(event) {
-            event.preventDefault();
-        });
-    
-        // Function to handle media items
-        function handleMedia(items) {
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].kind === 'file') {
-                    let file = items[i].getAsFile();
-                    if (file) {
-                        let reader = new FileReader();
-                        reader.onload = function(event) {
-                            displayPreview(event.target.result, file.type);
-                        };
-                        reader.readAsDataURL(file);
-                    }
+    // Function to handle paste events
+    document.getElementById('messageInput').addEventListener('paste', function(event) {
+        handleMedia(event.clipboardData.items);
+    });
+
+    // Function to handle drop events
+    document.getElementById('messageInput').addEventListener('drop', function(event) {
+        event.preventDefault(); // Prevent default handling of the data
+        handleMedia(event.dataTransfer.items);
+    });
+
+    // Prevent default dragover behavior
+    document.getElementById('messageInput').addEventListener('dragover', function(event) {
+        event.preventDefault();
+    });
+
+    // Function to handle media items
+    function handleMedia(items) {
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].kind === 'file') {
+                let file = items[i].getAsFile();
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function(event) {
+                        displayPreview(event.target.result, file.type, file.name);
+                    };
+                    reader.readAsDataURL(file);
                 }
+            } else if (items[i].kind === 'string' && items[i].type.startsWith('image/')) {
+                items[i].getAsString(function(dataUrl) {
+                    displayPreview(dataUrl, 'image', 'pasted image');
+                });
             }
         }
-    
-        // Function to display media in the preview container
-        function displayPreview(src, type) {
-            let previewContainer = document.getElementById('previewContainer');
-            
-            // Create media element
-            let mediaElement;
-            if (type.startsWith('image/')) {
-                mediaElement = document.createElement('img');
-                mediaElement.src = src;
-                mediaElement.className = 'preview-cont-disp'; // Add the class for styling
-            } else if (type.startsWith('video/')) {
-                mediaElement = document.createElement('video');
-                mediaElement.src = src;
-                mediaElement.controls = true;
-                mediaElement.className = 'preview-cont-disp'; // Add the class for styling
-            } else {
-                return; // Skip unsupported media types
-            }
-    
-            previewContainer.appendChild(mediaElement);
-            previewContainer.style.display = 'flex'; // Show the preview container
+    }
+
+    // Function to display media in the preview container
+    function displayPreview(src, type, name) {
+        let previewContainer = document.getElementById('previewContainer');
+
+        // Create media element
+        let mediaElement;
+
+        if (type.startsWith('image/')) {
+            mediaElement = document.createElement('img');
+            mediaElement.src = src;
+            mediaElement.alt = name; // Set the alt text
+        } else if (type.startsWith('video/')) {
+            mediaElement = document.createElement('video');
+            mediaElement.src = src;
+            mediaElement.controls = true;
+            mediaElement.width = 200; // Adjust width as needed
+        } else if (type.startsWith('audio/')) {
+            mediaElement = document.createElement('audio');
+            mediaElement.src = src;
+            mediaElement.controls = true;
+        } else {
+            mediaElement = document.createElement('iframe');
+            mediaElement.src = src;
+            mediaElement.width = '100%';
+            mediaElement.height = '200px'; // Adjust height as needed
         }
-    </script>
+
+        mediaElement.className = 'preview-cont-disp'; // Add the class for styling
+
+        previewContainer.appendChild(mediaElement);
+        previewContainer.style.display = 'flex'; // Show the preview container
+    }
+</script>
+
     
 </body>
 </html>
