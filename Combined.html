@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <style>
+        .chat-visible {
+            width: 100vw;
+            height: 60vw; /* Adjusted for more height */
+            max-height: 100vh;
+            overflow-x: scroll; /* Enable horizontal scrolling */
+            white-space: nowrap; /* Prevent iframes from wrapping */
+            margin: 0 auto;
+            padding: 20px; /* Add some padding */
+        }
+
+        .iframe-container {
+            display: inline-block;
+            width: 80vw; /* Adjust width as needed */
+            height: 100%;
+            border: none;
+            margin-right: 20px; /* Add space between iframes */
+            vertical-align: top; /* Align iframes at the top */
+        }
+    </style>
+</head>
+<body>
+<div class="chat-visible">
+    <!-- First website -->
+    <iframe class="iframe-container" src="https://advanced-master-coder.github.io/t/index.html"></iframe>
+    
+    <!-- Second website -->
+    <iframe class="iframe-container" src="https://advanced-master-coder.github.io/t/file-upload.html"></iframe>
+    
+    <!-- Third website -->
+    <iframe class="iframe-container" src="https://advanced-master-coder.github.io/t/file-view.html"></iframe>
+</div>
+</body>
+</html>
