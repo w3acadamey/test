@@ -1,12 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="assets/css/chat.css">
+    <style>
+                /* Styles for the giphy container */
+                .giphy {
+            position: fixed;
+            top: 10px;
+            width: 37%;
+            height: 700px;
+            background-color: #000; /* Black background color */
+            border: 2px solid #595659; /* Border color */
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9999;
+        }
+
+        /* Styles for the search-iframe */
+        .search-iframe {
+            top: 1%;
+            left: 3%;
+            width: 90%;
+            height: 56%;
+            background-color: #2C2B2C;
+            border: 2px solid #595659;
+            border-radius: 15px;
+            padding: 10px;
+            position: relative; /* Ensure button is positioned relative to this container */
+            overflow-y: auto; /* Add vertical scroll bar */
+        }
+
+        .search-iframe input[type="text"] {
+            width: 70%;
+            padding: 5px;
+            border-radius: 10px;
+            border: none;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .search-iframe button {
+            padding: 5px 10px;
+            border-radius: 10px;
+            border: none;
+            background-color: white;
+            color: #000000;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin-left: 7%;
+        }
+
+        .search-iframe::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .search-iframe::-webkit-scrollbar-thumb {
+            background-color: #595659;
+            border-radius: 3px;
+        }
+
+        /* Styles for the preview container */
+        .preview-container {
+            top: 3%;
+            left: 3%;
+            width: 90%;
+            height: 25%;
+            background-color: #2C2B2C;
+            border: 2px solid #595659;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: row; /* Arrange items horizontally */
+            overflow-x: auto; /* Allow horizontal scrolling if necessary */
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+        }
+
+        .preview-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .preview-container::-webkit-scrollbar-thumb {
+            background-color: #595659;
+            border-radius: 3px;
+        }
+
+        .preview-container img,
+        .preview-container video,
+        .preview-container audio,
+        .preview-container iframe {
+            max-height: 100px;
+            margin-right: 10px;
+            border-radius: 10px;
+        }
+
+        /* Adjust the gif container styles */
+        .gif-container {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .gif-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .gif-container::-webkit-scrollbar-thumb {
+            background-color: #595659;
+            border-radius: 3px;
+        }
+
+        .gif-container img {
+            max-width: 100px;
+            border-radius: 10px;
+            cursor: grab;
+        }
+
+        .load-more-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #595659;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        .load-more-btn:hover {
+            background-color: #7e7e7e;
+        }
+
+        .search-iframe input[type="text"],
+        .search-iframe button {
+            position: sticky; /* Sticky positioning */
+            top: 10px; /* Adjust as needed */
+        }
+        .Controll
+        {
+            margin-top:2%;
+            margin-left:3%;
+            width: 93%;
+            height: 5%;
+            background-color: #2C2B2C;
+            border: 2px solid #595659;
+            border-radius: 15px;
+        }
+        .close-icon {
+            position: absolute;
+            font-size: 20px;
+            top:3%;
+            right: 5%;
+            color: #fff; /* White color for the icon */
+            cursor: pointer;
+            z-index: 10000; /* Ensure it's above other elements */
+        }
+        .gif-min
+        {
+            position: absolute;
+            font-size: 20px;
+            top:3%;
+            right: 10%;
+            color: #fff; /* White color for the icon */
+            cursor: pointer;
+            z-index: 10000; /* Ensure it's above other elements */
+        }
+        /* Mobile view styles */
+        @media (max-width: 768px) {
+            .giphy {
+                width: 90%;
+                height: 600px;
+                top: 5px;
+            }
+
+            .search-iframe {
+                width: 90%;
+                height: 52%;
+                top: 1%;
+                left: 2%;
+            }
+
+            .search-iframe input[type="text"] {
+                width: 65%;
+                left: 5%;
+            }
+
+            .search-iframe button {
+                right: 5%;
+                margin-left: 8%;
+            }
+
+            .preview-container {
+                width: 90%;
+                height: 28%;
+                top: 3%;
+                left: 2%;
+            }
+
+            .preview-container img,
+            .preview-container video,
+            .preview-container audio,
+            .preview-container iframe {
+                max-height: 80px;
+            }
+            .Controll{
+                width: 94%;
+            }
+            .close-icon {
+                font-size: 15px;
+                top:2.5%;
+                right: 5%;
+            }
+            .gif-min
+            {
+                font-size: 15px;
+                top:2.5%;
+                right: 10%;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <div class="profile-container">
         <button class="user-button" onclick="toggleLogMenu()">
@@ -18,7 +245,7 @@
         </div>
     </div>
     <div class="container" id="output">
-        <!-- Chat Loading Container --> 
+        <!-- Chat Loading Container -->
     </div>
     <div class="bottom-container">
         <div class="input-container">
@@ -35,13 +262,24 @@
                 <img class="view-img" src="assets/images/view.png" alt="View Button">
             </a>
             <img class="media-img" src="assets/images/Up-logo.png" alt="Media Upload Button" style="margin-top: 20px;">
-        </div>                       
-        <div class="smiley-container" id="smileyContainer" style="display: none;"></div>        
+        </div>
+        <div class="smiley-container" id="smileyContainer" style="display: none;"></div>
     </div>
 
-    <!-- New Preview Container -->
-    <div class="preview-container" id="previewContainer" style="display: none;"></div>
-
+    <div class="giphy">
+        <div class="Controll">
+        <i class="fas fa-times close-icon" onclick="closeGiphy()"></i>
+        <i class="fas fa-minus gif-min" onclick="closeGiphy()"></i>
+        </div>
+        <div class="search-iframe">
+            <input type="text" id="gifSearch" placeholder="Search for GIFs">
+            <button onclick="searchGIFs()">Search</button>
+            <div class="gif-container" id="gifContainer">
+                <!-- Load More button will be dynamically added here -->
+            </div>
+        </div>
+        <div class="preview-container" id="previewContainer"></div>
+    </div>
     <script src="assets/script/chat-view.js"></script>
     <script src="assets/script/send.js"></script>
     <script src="assets/script/emoji.js"></script>
@@ -50,49 +288,96 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
     <script>
-        // Function to handle paste events
-        document.getElementById('messageInput').addEventListener('paste', function(event) {
-            handleMedia(event.clipboardData.items);
-        });
-    
-        // Function to handle drop events
-        document.getElementById('messageInput').addEventListener('drop', function(event) {
-            event.preventDefault(); // Prevent default handling of the data
-            handleMedia(event.dataTransfer.items);
-        });
-    
-        // Prevent default dragover behavior
-        document.getElementById('messageInput').addEventListener('dragover', function(event) {
-            event.preventDefault();
-        });
-    
-        // Function to handle media items
-        function handleMedia(items) {
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].kind === 'file') {
-                    let file = items[i].getAsFile();
-                    if (file) {
-                        let reader = new FileReader();
-                        reader.onload = function(event) {
-                            displayPreview(event.target.result, file.type, file.name);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                } else if (items[i].kind === 'string' && items[i].type.startsWith('image/')) {
-                    items[i].getAsString(function(dataUrl) {
-                        displayPreview(dataUrl, 'image', 'pasted image');
+        let offset = 0;
+        const limit = 100;
+        let isLoading = false;
+
+        async function searchGIFs() {
+            const apiKey = 'Xo2urzYWAUkteQgP3DSaBETIxnuBuZlF';
+            const query = document.getElementById('gifSearch').value;
+            const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}`;
+
+            isLoading = true;
+            const response = await fetch(url);
+            const data = await response.json();
+            isLoading = false;
+
+            const gifContainer = document.getElementById('gifContainer');
+            gifContainer.innerHTML = ''; // Clear previous results
+
+            if (data.data.length > 0) {
+                data.data.forEach(gif => {
+                    const img = document.createElement('img');
+                    img.src = gif.images.fixed_height.url;
+                    img.draggable = true;
+                    img.addEventListener('dragstart', function (event) {
+                        event.dataTransfer.setData('text/plain', event.target.src);
                     });
+                    gifContainer.appendChild(img);
+                });
+
+                // Add "Load More" button at the end
+                const loadMoreBtn = document.createElement('div');
+                loadMoreBtn.className = 'load-more-btn';
+                loadMoreBtn.id = 'loadMoreBtn';
+                loadMoreBtn.textContent = 'Load More';
+                loadMoreBtn.onclick = loadMoreGIFs;
+                gifContainer.appendChild(loadMoreBtn);
+            }
+        }
+
+        async function loadMoreGIFs() {
+            if (isLoading) return;
+
+            const apiKey = 'Xo2urzYWAUkteQgP3DSaBETIxnuBuZlF';
+            const query = document.getElementById('gifSearch').value;
+            const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}`;
+
+            isLoading = true;
+            const response = await fetch(url);
+            const data = await response.json();
+            isLoading = false;
+
+            const gifContainer = document.getElementById('gifContainer');
+
+            if (data.data.length > 0) {
+                data.data.forEach(gif => {
+                    const img = document.createElement('img');
+                    img.src = gif.images.fixed_height.url;
+                    img.draggable = true;
+                    img.addEventListener('dragstart', function (event) {
+                        event.dataTransfer.setData('text/plain', event.target.src);
+                    });
+                    gifContainer.insertBefore(img, gifContainer.querySelector('.load-more-btn'));
+                });
+
+                // Update offset for pagination
+                offset += limit;
+            } else {
+                // Remove the "Load More" button if no more results
+                const loadMoreBtn = document.getElementById('loadMoreBtn');
+                if (loadMoreBtn) {
+                    loadMoreBtn.remove();
                 }
             }
         }
-    
-        // Function to display media in the preview container
+
+        document.getElementById('previewContainer').addEventListener('dragover', function (event) {
+            event.preventDefault();
+        });
+
+        document.getElementById('previewContainer').addEventListener('drop', function (event) {
+            event.preventDefault();
+            const src = event.dataTransfer.getData('text/plain');
+            displayPreview(src, 'image/gif', 'GIF');
+        });
+
         function displayPreview(src, type, name) {
             let previewContainer = document.getElementById('previewContainer');
-    
+
             // Create media element
             let mediaElement;
-    
+
             if (type.startsWith('image/')) {
                 mediaElement = document.createElement('img');
                 mediaElement.src = src;
@@ -112,9 +397,9 @@
                 mediaElement.width = '100%';
                 mediaElement.height = '200px'; // Adjust height as needed
             }
-    
+
             mediaElement.className = 'preview-cont-disp'; // Add the class for styling
-    
+
             previewContainer.appendChild(mediaElement);
             previewContainer.style.display = 'flex'; // Show the preview container
         }
@@ -147,7 +432,7 @@
         }
 
         // Close the log menu when clicking outside of it
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (!event.target.matches('.user-button') && !event.target.matches('.user-icon')) {
                 var logMenu = document.getElementById('logMenu');
                 if (logMenu.style.display === 'block') {
@@ -155,6 +440,52 @@
                 }
             }
         }
-    </script>    
+    </script>
+    <script>
+        let giphyContainer = document.querySelector('.giphy');
+        let isDragging = false;
+        let startX, startY, initialLeft, initialTop;
+    
+        // Function to handle dragging
+        function handleMouseDown(event) {
+            if (event.target.closest('.search-iframe') || event.target.closest('.preview-container')) {
+                // Do not start dragging if interacting with child elements
+                return;
+            }
+    
+            // Start dragging
+            isDragging = true;
+            startX = event.clientX;
+            startY = event.clientY;
+            initialLeft = parseInt(window.getComputedStyle(giphyContainer).left, 10);
+            initialTop = parseInt(window.getComputedStyle(giphyContainer).top, 10);
+    
+            // Prevent text selection during drag
+            event.preventDefault();
+        }
+    
+        // Function to handle dragging movement
+        function handleMouseMove(event) {
+            if (isDragging) {
+                // Calculate new position
+                let dx = event.clientX - startX;
+                let dy = event.clientY - startY;
+                giphyContainer.style.left = `${initialLeft + dx}px`;
+                giphyContainer.style.top = `${initialTop + dy}px`;
+            }
+        }
+    
+        // Function to handle drag end
+        function handleMouseUp() {
+            isDragging = false;
+        }
+    
+        // Add event listeners for drag functionality
+        giphyContainer.addEventListener('mousedown', handleMouseDown);
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+    </script>
+    
 </body>
+
 </html>
