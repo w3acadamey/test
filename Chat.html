@@ -288,281 +288,222 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
     <script>
-    let offset = 0;
-    const limit = 100;
-    let isLoading = false;
-
-    async function searchGIFs() {
-        const apiKey = 'Xo2urzYWAUkteQgP3DSaBETIxnuBuZlF';
-        const query = document.getElementById('gifSearch').value;
-        const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}`;
-
-        isLoading = true;
-        const response = await fetch(url);
-        const data = await response.json();
-        isLoading = false;
-
-        const gifContainer = document.getElementById('gifContainer');
-        gifContainer.innerHTML = ''; // Clear previous results
-
-        if (data.data.length > 0) {
-            data.data.forEach(gif => {
-                const img = document.createElement('img');
-                img.src = gif.images.fixed_height.url;
-                img.draggable = true;
-                img.addEventListener('dragstart', function (event) {
-                    event.dataTransfer.setData('text/plain', event.target.src);
+        let offset = 0;
+        const limit = 100;
+        let isLoading = false;
+        let lastTap = 0; // To keep track of the last tap time
+    
+        async function searchGIFs() {
+            const apiKey = 'Xo2urzYWAUkteQgP3DSaBETIxnuBuZlF';
+            const query = document.getElementById('gifSearch').value;
+            const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}`;
+    
+            isLoading = true;
+            const response = await fetch(url);
+            const data = await response.json();
+            isLoading = false;
+    
+            const gifContainer = document.getElementById('gifContainer');
+            gifContainer.innerHTML = ''; // Clear previous results
+    
+            if (data.data.length > 0) {
+                data.data.forEach(gif => {
+                    const img = document.createElement('img');
+                    img.src = gif.images.fixed_height.url;
+                    img.draggable = true;
+                    img.addEventListener('dragstart', function (event) {
+                        event.dataTransfer.setData('text/plain', event.target.src);
+                    });
+                    img.addEventListener('touchend', function (event) {
+                        handleDoubleTap(event, gif.images.fixed_height.url);
+                    });
+                    gifContainer.appendChild(img);
                 });
-
-                // Add touch event listeners for mobile devices
-                img.addEventListener('touchstart', function (event) {
-                    event.preventDefault();
-                    const touch = event.touches[0];
-                    event.dataTransfer = {
-                        setData: function (type, data) {
-                            event.data = { type, data };
-                        },
-                        getData: function (type) {
-                            return event.data?.data || '';
-                        }
-                    };
-                    event.dataTransfer.setData('text/plain', event.target.src);
-                });
-
-                gifContainer.appendChild(img);
-            });
-
-            // Add "Load More" button at the end
-            const loadMoreBtn = document.createElement('div');
-            loadMoreBtn.className = 'load-more-btn';
-            loadMoreBtn.id = 'loadMoreBtn';
-            loadMoreBtn.textContent = 'Load More';
-            loadMoreBtn.onclick = loadMoreGIFs;
-            gifContainer.appendChild(loadMoreBtn);
-        }
-    }
-
-    async function loadMoreGIFs() {
-        if (isLoading) return;
-
-        const apiKey = 'Xo2urzYWAUkteQgP3DSaBETIxnuBuZlF';
-        const query = document.getElementById('gifSearch').value;
-        const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}`;
-
-        isLoading = true;
-        const response = await fetch(url);
-        const data = await response.json();
-        isLoading = false;
-
-        const gifContainer = document.getElementById('gifContainer');
-
-        if (data.data.length > 0) {
-            data.data.forEach(gif => {
-                const img = document.createElement('img');
-                img.src = gif.images.fixed_height.url;
-                img.draggable = true;
-                img.addEventListener('dragstart', function (event) {
-                    event.dataTransfer.setData('text/plain', event.target.src);
-                });
-
-                // Add touch event listeners for mobile devices
-                img.addEventListener('touchstart', function (event) {
-                    event.preventDefault();
-                    const touch = event.touches[0];
-                    event.dataTransfer = {
-                        setData: function (type, data) {
-                            event.data = { type, data };
-                        },
-                        getData: function (type) {
-                            return event.data?.data || '';
-                        }
-                    };
-                    event.dataTransfer.setData('text/plain', event.target.src);
-                });
-
-                gifContainer.insertBefore(img, gifContainer.querySelector('.load-more-btn'));
-            });
-
-            // Update offset for pagination
-            offset += limit;
-        } else {
-            // Remove the "Load More" button if no more results
-            const loadMoreBtn = document.getElementById('loadMoreBtn');
-            if (loadMoreBtn) {
-                loadMoreBtn.remove();
+    
+                // Add "Load More" button at the end
+                const loadMoreBtn = document.createElement('div');
+                loadMoreBtn.className = 'load-more-btn';
+                loadMoreBtn.id = 'loadMoreBtn';
+                loadMoreBtn.textContent = 'Load More';
+                loadMoreBtn.onclick = loadMoreGIFs;
+                gifContainer.appendChild(loadMoreBtn);
             }
         }
-    }
-
-    document.getElementById('previewContainer').addEventListener('dragover', function (event) {
-        event.preventDefault();
-    });
-
-    document.getElementById('previewContainer').addEventListener('drop', function (event) {
-        event.preventDefault();
-        const src = event.dataTransfer.getData('text/plain');
-        displayPreview(src, 'image/gif', 'GIF');
-    });
-
-    // Add touch events for the preview container
-    document.getElementById('previewContainer').addEventListener('touchmove', function (event) {
-        event.preventDefault();
-    });
-
-    document.getElementById('previewContainer').addEventListener('touchend', function (event) {
-        event.preventDefault();
-        const touch = event.changedTouches[0];
-        const src = touch.target.src;
-        displayPreview(src, 'image/gif', 'GIF');
-    });
-
-    function displayPreview(src, type, name) {
-        let previewContainer = document.getElementById('previewContainer');
-
-        // Create media element
-        let mediaElement;
-
-        if (type.startsWith('image/')) {
-            mediaElement = document.createElement('img');
-            mediaElement.src = src;
-            mediaElement.alt = name; // Set the alt text
-        } else if (type.startsWith('video/')) {
-            mediaElement = document.createElement('video');
-            mediaElement.src = src;
-            mediaElement.controls = true;
-            mediaElement.width = 200; // Adjust width as needed
-        } else if (type.startsWith('audio/')) {
-            mediaElement = document.createElement('audio');
-            mediaElement.src = src;
-            mediaElement.controls = true;
-        } else {
-            mediaElement = document.createElement('iframe');
-            mediaElement.src = src;
-            mediaElement.width = '100%';
-            mediaElement.height = '200px'; // Adjust height as needed
+    
+        async function loadMoreGIFs() {
+            if (isLoading) return;
+    
+            const apiKey = 'Xo2urzYWAUkteQgP3DSaBETIxnuBuZlF';
+            const query = document.getElementById('gifSearch').value;
+            const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}`;
+    
+            isLoading = true;
+            const response = await fetch(url);
+            const data = await response.json();
+            isLoading = false;
+    
+            const gifContainer = document.getElementById('gifContainer');
+    
+            if (data.data.length > 0) {
+                data.data.forEach(gif => {
+                    const img = document.createElement('img');
+                    img.src = gif.images.fixed_height.url;
+                    img.draggable = true;
+                    img.addEventListener('dragstart', function (event) {
+                        event.dataTransfer.setData('text/plain', event.target.src);
+                    });
+                    img.addEventListener('touchend', function (event) {
+                        handleDoubleTap(event, gif.images.fixed_height.url);
+                    });
+                    gifContainer.insertBefore(img, gifContainer.querySelector('.load-more-btn'));
+                });
+    
+                // Update offset for pagination
+                offset += limit;
+            } else {
+                // Remove the "Load More" button if no more results
+                const loadMoreBtn = document.getElementById('loadMoreBtn');
+                if (loadMoreBtn) {
+                    loadMoreBtn.remove();
+                }
+            }
         }
-
-        mediaElement.className = 'preview-cont-disp'; // Add the class for styling
-
-        previewContainer.appendChild(mediaElement);
-        previewContainer.style.display = 'flex'; // Show the preview container
-    }
-
-    // Check if session is active
-    var loggedInUser = localStorage.getItem('loggedInUser');
-    if (!loggedInUser) {
-        // Redirect to index.html if session is not active
-        window.location.href = "index.html";
-    }
-
-    // Function to unset session
-    function unsetSession() {
-        // Display confirmation dialog
-        var confirmLogout = confirm("Are you sure you want to log out?");
-        if (confirmLogout) {
-            localStorage.removeItem('loggedInUser');
-            window.location.href = "index.html"; // Redirect to index.html after unsetting session
+    
+        function handleDoubleTap(event, src) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 300 && tapLength > 0) {
+                // Double-tap detected
+                event.preventDefault();
+                displayPreview(src, 'image/gif', 'GIF');
+            }
+            lastTap = currentTime;
         }
-    }
-
-    // Function to toggle the log menu
-    function toggleLogMenu() {
-        var logMenu = document.getElementById('logMenu');
-        if (logMenu.style.display === 'none' || logMenu.style.display === '') {
-            logMenu.style.display = 'block';
-        } else {
-            logMenu.style.display = 'none';
+    
+        document.getElementById('previewContainer').addEventListener('dragover', function (event) {
+            event.preventDefault();
+        });
+    
+        document.getElementById('previewContainer').addEventListener('drop', function (event) {
+            event.preventDefault();
+            const src = event.dataTransfer.getData('text/plain');
+            displayPreview(src, 'image/gif', 'GIF');
+        });
+    
+        function displayPreview(src, type, name) {
+            let previewContainer = document.getElementById('previewContainer');
+    
+            // Create media element
+            let mediaElement;
+    
+            if (type.startsWith('image/')) {
+                mediaElement = document.createElement('img');
+                mediaElement.src = src;
+                mediaElement.alt = name; // Set the alt text
+            } else if (type.startsWith('video/')) {
+                mediaElement = document.createElement('video');
+                mediaElement.src = src;
+                mediaElement.controls = true;
+                mediaElement.width = 200; // Adjust width as needed
+            } else if (type.startsWith('audio/')) {
+                mediaElement = document.createElement('audio');
+                mediaElement.src = src;
+                mediaElement.controls = true;
+            } else {
+                mediaElement = document.createElement('iframe');
+                mediaElement.src = src;
+                mediaElement.width = '100%';
+                mediaElement.height = '200px'; // Adjust height as needed
+            }
+    
+            mediaElement.className = 'preview-cont-disp'; // Add the class for styling
+    
+            previewContainer.appendChild(mediaElement);
+            previewContainer.style.display = 'flex'; // Show the preview container
         }
-    }
-
-    // Close the log menu when clicking outside of it
-    window.onclick = function (event) {
-        if (!event.target.matches('.user-button') && !event.target.matches('.user-icon')) {
+    
+        // Check if session is active
+        var loggedInUser = localStorage.getItem('loggedInUser');
+        if (!loggedInUser) {
+            // Redirect to index.html if session is not active
+            window.location.href = "index.html";
+        }
+    
+        // Function to unset session
+        function unsetSession() {
+            // Display confirmation dialog
+            var confirmLogout = confirm("Are you sure you want to log out?");
+            if (confirmLogout) {
+                localStorage.removeItem('loggedInUser');
+                window.location.href = "index.html"; // Redirect to index.html after unsetting session
+            }
+        }
+    
+        // Function to toggle the log menu
+        function toggleLogMenu() {
             var logMenu = document.getElementById('logMenu');
-            if (logMenu.style.display === 'block') {
+            if (logMenu.style.display === 'none' || logMenu.style.display === '') {
+                logMenu.style.display = 'block';
+            } else {
                 logMenu.style.display = 'none';
             }
         }
-    }
-</script>
-  <script>
-    let giphyContainer = document.querySelector('.giphy');
-    let isDragging = false;
-    let startX, startY, initialLeft, initialTop;
-
-    // Function to handle dragging start for mouse
-    function handleMouseDown(event) {
-        if (event.target.closest('.search-iframe') || event.target.closest('.preview-container')) {
-            // Do not start dragging if interacting with child elements
-            return;
+    
+        // Close the log menu when clicking outside of it
+        window.onclick = function (event) {
+            if (!event.target.matches('.user-button') && !event.target.matches('.user-icon')) {
+                var logMenu = document.getElementById('logMenu');
+                if (logMenu.style.display === 'block') {
+                    logMenu.style.display = 'none';
+                }
+            }
         }
-
-        isDragging = true;
-        startX = event.clientX;
-        startY = event.clientY;
-        initialLeft = parseInt(window.getComputedStyle(giphyContainer).left, 10);
-        initialTop = parseInt(window.getComputedStyle(giphyContainer).top, 10);
-
-        event.preventDefault(); // Prevent text selection during drag
-    }
-
-    // Function to handle dragging start for touch
-    function handleTouchStart(event) {
-        if (event.target.closest('.search-iframe') || event.target.closest('.preview-container')) {
-            // Do not start dragging if interacting with child elements
-            return;
+    </script>
+    
+    <script>
+        let giphyContainer = document.querySelector('.giphy');
+        let isDragging = false;
+        let startX, startY, initialLeft, initialTop;
+    
+        // Function to handle dragging
+        function handleMouseDown(event) {
+            if (event.target.closest('.search-iframe') || event.target.closest('.preview-container')) {
+                // Do not start dragging if interacting with child elements
+                return;
+            }
+    
+            // Start dragging
+            isDragging = true;
+            startX = event.clientX;
+            startY = event.clientY;
+            initialLeft = parseInt(window.getComputedStyle(giphyContainer).left, 10);
+            initialTop = parseInt(window.getComputedStyle(giphyContainer).top, 10);
+    
+            // Prevent text selection during drag
+            event.preventDefault();
         }
-
-        isDragging = true;
-        startX = event.touches[0].clientX;
-        startY = event.touches[0].clientY;
-        initialLeft = parseInt(window.getComputedStyle(giphyContainer).left, 10);
-        initialTop = parseInt(window.getComputedStyle(giphyContainer).top, 10);
-
-        event.preventDefault(); // Prevent default touch behavior
-    }
-
-    // Function to handle dragging movement for mouse
-    function handleMouseMove(event) {
-        if (isDragging) {
-            let dx = event.clientX - startX;
-            let dy = event.clientY - startY;
-            giphyContainer.style.left = `${initialLeft + dx}px`;
-            giphyContainer.style.top = `${initialTop + dy}px`;
+    
+        // Function to handle dragging movement
+        function handleMouseMove(event) {
+            if (isDragging) {
+                // Calculate new position
+                let dx = event.clientX - startX;
+                let dy = event.clientY - startY;
+                giphyContainer.style.left = `${initialLeft + dx}px`;
+                giphyContainer.style.top = `${initialTop + dy}px`;
+            }
         }
-    }
-
-    // Function to handle dragging movement for touch
-    function handleTouchMove(event) {
-        if (isDragging) {
-            let dx = event.touches[0].clientX - startX;
-            let dy = event.touches[0].clientY - startY;
-            giphyContainer.style.left = `${initialLeft + dx}px`;
-            giphyContainer.style.top = `${initialTop + dy}px`;
+    
+        // Function to handle drag end
+        function handleMouseUp() {
+            isDragging = false;
         }
-    }
-
-    // Function to handle drag end for mouse
-    function handleMouseUp() {
-        isDragging = false;
-    }
-
-    // Function to handle drag end for touch
-    function handleTouchEnd() {
-        isDragging = false;
-    }
-
-    // Add event listeners for mouse drag functionality
-    giphyContainer.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-
-    // Add event listeners for touch drag functionality
-    giphyContainer.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchmove', handleTouchMove);
-    document.addEventListener('touchend', handleTouchEnd);
-</script>
-
+    
+        // Add event listeners for drag functionality
+        giphyContainer.addEventListener('mousedown', handleMouseDown);
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+    </script>
     
 </body>
 
