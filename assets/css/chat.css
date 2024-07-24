@@ -178,30 +178,11 @@ body {
     width: 26px;
     margin-bottom: 2%;
 }
-.preview-container {
-    position: fixed; /* Position it fixed to overlay */
-    top: 10; /* Adjusted for better positioning */
-    left: 5; /* Adjusted for better positioning */
-    width: 80%;
-    height: 50%;
-    background: #2C2B2C; /* Background color */
-    display: flex; /* Use flexbox for layout */
-    overflow-x: auto; /* Horizontal scrolling */
-    overflow-y: hidden; /* No vertical scrolling */
-    z-index: 1000; /* Make sure it's above other content */
-    color: white; /* Font color */
-    font-family: Arial, sans-serif; /* Font style */
-    text-align: center; /* Center text */
-    padding: 20px; /* Padding around content */
-    border: 2px solid #595659; /* Light white border */
-    border-radius: 15px; /* Curved edges */
-    white-space: nowrap; /* Prevent wrapping of items */
-}
-
 .preview-cont-disp {
+    margin-top:2%;
+    margin-left: 2%;
     max-width: auto; /* Ensure it does not exceed container width */
-    max-height: 200px; /* Ensure it does not exceed container height */
-    margin-right: 10px; /* Space between media items */
+    min-height: 150px; /* Ensure it does not exceed container height */
     display: inline-block; /* Keep items inline for horizontal scrolling */
 }
 
