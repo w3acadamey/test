@@ -441,50 +441,84 @@
             }
         }
     </script>
-    <script>
-        let giphyContainer = document.querySelector('.giphy');
-        let isDragging = false;
-        let startX, startY, initialLeft, initialTop;
-    
-        // Function to handle dragging
-        function handleMouseDown(event) {
-            if (event.target.closest('.search-iframe') || event.target.closest('.preview-container')) {
-                // Do not start dragging if interacting with child elements
-                return;
-            }
-    
-            // Start dragging
-            isDragging = true;
-            startX = event.clientX;
-            startY = event.clientY;
-            initialLeft = parseInt(window.getComputedStyle(giphyContainer).left, 10);
-            initialTop = parseInt(window.getComputedStyle(giphyContainer).top, 10);
-    
-            // Prevent text selection during drag
-            event.preventDefault();
+  <script>
+    let giphyContainer = document.querySelector('.giphy');
+    let isDragging = false;
+    let startX, startY, initialLeft, initialTop;
+
+    // Function to handle dragging start for mouse
+    function handleMouseDown(event) {
+        if (event.target.closest('.search-iframe') || event.target.closest('.preview-container')) {
+            // Do not start dragging if interacting with child elements
+            return;
         }
-    
-        // Function to handle dragging movement
-        function handleMouseMove(event) {
-            if (isDragging) {
-                // Calculate new position
-                let dx = event.clientX - startX;
-                let dy = event.clientY - startY;
-                giphyContainer.style.left = `${initialLeft + dx}px`;
-                giphyContainer.style.top = `${initialTop + dy}px`;
-            }
+
+        isDragging = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        initialLeft = parseInt(window.getComputedStyle(giphyContainer).left, 10);
+        initialTop = parseInt(window.getComputedStyle(giphyContainer).top, 10);
+
+        event.preventDefault(); // Prevent text selection during drag
+    }
+
+    // Function to handle dragging start for touch
+    function handleTouchStart(event) {
+        if (event.target.closest('.search-iframe') || event.target.closest('.preview-container')) {
+            // Do not start dragging if interacting with child elements
+            return;
         }
-    
-        // Function to handle drag end
-        function handleMouseUp() {
-            isDragging = false;
+
+        isDragging = true;
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+        initialLeft = parseInt(window.getComputedStyle(giphyContainer).left, 10);
+        initialTop = parseInt(window.getComputedStyle(giphyContainer).top, 10);
+
+        event.preventDefault(); // Prevent default touch behavior
+    }
+
+    // Function to handle dragging movement for mouse
+    function handleMouseMove(event) {
+        if (isDragging) {
+            let dx = event.clientX - startX;
+            let dy = event.clientY - startY;
+            giphyContainer.style.left = `${initialLeft + dx}px`;
+            giphyContainer.style.top = `${initialTop + dy}px`;
         }
-    
-        // Add event listeners for drag functionality
-        giphyContainer.addEventListener('mousedown', handleMouseDown);
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
-    </script>
+    }
+
+    // Function to handle dragging movement for touch
+    function handleTouchMove(event) {
+        if (isDragging) {
+            let dx = event.touches[0].clientX - startX;
+            let dy = event.touches[0].clientY - startY;
+            giphyContainer.style.left = `${initialLeft + dx}px`;
+            giphyContainer.style.top = `${initialTop + dy}px`;
+        }
+    }
+
+    // Function to handle drag end for mouse
+    function handleMouseUp() {
+        isDragging = false;
+    }
+
+    // Function to handle drag end for touch
+    function handleTouchEnd() {
+        isDragging = false;
+    }
+
+    // Add event listeners for mouse drag functionality
+    giphyContainer.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    // Add event listeners for touch drag functionality
+    giphyContainer.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleTouchEnd);
+</script>
+
     
 </body>
 
