@@ -7,231 +7,7 @@
     <title>Chat</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="assets/css/chat.css">
-    <style>
-                /* Styles for the giphy container */
-                .giphy {
-            position: fixed;
-            top: 10px;
-            width: 37%;
-            height: 700px;
-            background-color: #000; /* Black background color */
-            border: 2px solid #595659; /* Border color */
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 9999;
-        }
-
-        /* Styles for the search-iframe */
-        .search-iframe {
-            top: 1%;
-            left: 3%;
-            width: 90%;
-            height: 56%;
-            background-color: #2C2B2C;
-            border: 2px solid #595659;
-            border-radius: 15px;
-            padding: 10px;
-            position: relative; /* Ensure button is positioned relative to this container */
-            overflow-y: auto; /* Add vertical scroll bar */
-        }
-
-        .search-iframe input[type="text"] {
-            width: 70%;
-            padding: 5px;
-            border-radius: 10px;
-            border: none;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
-
-        .search-iframe button {
-            padding: 5px 10px;
-            border-radius: 10px;
-            border: none;
-            background-color: white;
-            color: #000000;
-            cursor: pointer;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            margin-left: 7%;
-        }
-
-        .search-iframe::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .search-iframe::-webkit-scrollbar-thumb {
-            background-color: #595659;
-            border-radius: 3px;
-        }
-
-        /* Styles for the preview container */
-        .preview-container {
-            top: 3%;
-            left: 3%;
-            width: 90%;
-            height: 25%;
-            background-color: #2C2B2C;
-            border: 2px solid #595659;
-            border-radius: 15px;
-            display: flex;
-            flex-direction: row; /* Arrange items horizontally */
-            overflow-x: auto; /* Allow horizontal scrolling if necessary */
-            padding: 10px;
-            position: relative;
-            bottom: 0;
-        }
-
-        .preview-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .preview-container::-webkit-scrollbar-thumb {
-            background-color: #595659;
-            border-radius: 3px;
-        }
-
-        .preview-container img,
-        .preview-container video,
-        .preview-container audio,
-        .preview-container iframe {
-            max-height: 100px;
-            margin-right: 10px;
-            border-radius: 10px;
-        }
-
-        /* Adjust the gif container styles */
-        .gif-container {
-            flex: 1;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            overflow-y: auto;
-        }
-
-        .gif-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .gif-container::-webkit-scrollbar-thumb {
-            background-color: #595659;
-            border-radius: 3px;
-        }
-
-        .gif-container img {
-            max-width: 100px;
-            border-radius: 10px;
-            cursor: grab;
-        }
-
-        .load-more-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background-color: #595659;
-            color: white;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
-            margin: 10px 0;
-        }
-
-        .load-more-btn:hover {
-            background-color: #7e7e7e;
-        }
-
-        .search-iframe input[type="text"],
-        .search-iframe button {
-            position: sticky; /* Sticky positioning */
-            top: 10px; /* Adjust as needed */
-        }
-        .Controll
-        {
-            margin-top:2%;
-            margin-left:3%;
-            width: 93%;
-            height: 5%;
-            background-color: #2C2B2C;
-            border: 2px solid #595659;
-            border-radius: 15px;
-        }
-        .close-icon {
-            position: absolute;
-            font-size: 20px;
-            top:3%;
-            right: 5%;
-            color: #fff; /* White color for the icon */
-            cursor: pointer;
-            z-index: 10000; /* Ensure it's above other elements */
-        }
-        .gif-min
-        {
-            position: absolute;
-            font-size: 20px;
-            top:3%;
-            right: 10%;
-            color: #fff; /* White color for the icon */
-            cursor: pointer;
-            z-index: 10000; /* Ensure it's above other elements */
-        }
-        /* Mobile view styles */
-        @media (max-width: 768px) {
-            .giphy {
-                width: 90%;
-                height: 600px;
-                top: 5px;
-            }
-
-            .search-iframe {
-                width: 90%;
-                height: 52%;
-                top: 1%;
-                left: 2%;
-            }
-
-            .search-iframe input[type="text"] {
-                width: 65%;
-                left: 5%;
-            }
-
-            .search-iframe button {
-                right: 5%;
-                margin-left: 8%;
-            }
-
-            .preview-container {
-                width: 90%;
-                height: 28%;
-                top: 3%;
-                left: 2%;
-            }
-
-            .preview-container img,
-            .preview-container video,
-            .preview-container audio,
-            .preview-container iframe {
-                max-height: 80px;
-            }
-            .Controll{
-                width: 94%;
-            }
-            .close-icon {
-                font-size: 15px;
-                top:2.5%;
-                right: 5%;
-            }
-            .gif-min
-            {
-                font-size: 15px;
-                top:2.5%;
-                right: 10%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/gif.css">
 </head>
 
 <body>
@@ -284,227 +60,48 @@
     <script src="assets/script/send.js"></script>
     <script src="assets/script/emoji.js"></script>
     <script src="assets/script/file.js"></script>
+    <script src="assets/script/gif-Container.js"></script>
     <!-- Add Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
-    <script>
-        let offset = 0;
-        const limit = 100;
-        let isLoading = false;
-        let lastTap = 0; // To keep track of the last tap time
-    
-        async function searchGIFs() {
-            const apiKey = 'Xo2urzYWAUkteQgP3DSaBETIxnuBuZlF';
-            const query = document.getElementById('gifSearch').value;
-            const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}`;
-    
-            isLoading = true;
-            const response = await fetch(url);
-            const data = await response.json();
-            isLoading = false;
-    
-            const gifContainer = document.getElementById('gifContainer');
-            gifContainer.innerHTML = ''; // Clear previous results
-    
-            if (data.data.length > 0) {
-                data.data.forEach(gif => {
-                    const img = document.createElement('img');
-                    img.src = gif.images.fixed_height.url;
-                    img.draggable = true;
-                    img.addEventListener('dragstart', function (event) {
-                        event.dataTransfer.setData('text/plain', event.target.src);
-                    });
-                    img.addEventListener('touchend', function (event) {
-                        handleDoubleTap(event, gif.images.fixed_height.url);
-                    });
-                    gifContainer.appendChild(img);
-                });
-    
-                // Add "Load More" button at the end
-                const loadMoreBtn = document.createElement('div');
-                loadMoreBtn.className = 'load-more-btn';
-                loadMoreBtn.id = 'loadMoreBtn';
-                loadMoreBtn.textContent = 'Load More';
-                loadMoreBtn.onclick = loadMoreGIFs;
-                gifContainer.appendChild(loadMoreBtn);
-            }
-        }
-    
-        async function loadMoreGIFs() {
-            if (isLoading) return;
-    
-            const apiKey = 'Xo2urzYWAUkteQgP3DSaBETIxnuBuZlF';
-            const query = document.getElementById('gifSearch').value;
-            const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}`;
-    
-            isLoading = true;
-            const response = await fetch(url);
-            const data = await response.json();
-            isLoading = false;
-    
-            const gifContainer = document.getElementById('gifContainer');
-    
-            if (data.data.length > 0) {
-                data.data.forEach(gif => {
-                    const img = document.createElement('img');
-                    img.src = gif.images.fixed_height.url;
-                    img.draggable = true;
-                    img.addEventListener('dragstart', function (event) {
-                        event.dataTransfer.setData('text/plain', event.target.src);
-                    });
-                    img.addEventListener('touchend', function (event) {
-                        handleDoubleTap(event, gif.images.fixed_height.url);
-                    });
-                    gifContainer.insertBefore(img, gifContainer.querySelector('.load-more-btn'));
-                });
-    
-                // Update offset for pagination
-                offset += limit;
-            } else {
-                // Remove the "Load More" button if no more results
-                const loadMoreBtn = document.getElementById('loadMoreBtn');
-                if (loadMoreBtn) {
-                    loadMoreBtn.remove();
-                }
-            }
-        }
-    
-        function handleDoubleTap(event, src) {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
-            if (tapLength < 300 && tapLength > 0) {
-                // Double-tap detected
-                event.preventDefault();
-                displayPreview(src, 'image/gif', 'GIF');
-            }
-            lastTap = currentTime;
-        }
-    
-        document.getElementById('previewContainer').addEventListener('dragover', function (event) {
-            event.preventDefault();
-        });
-    
-        document.getElementById('previewContainer').addEventListener('drop', function (event) {
-            event.preventDefault();
-            const src = event.dataTransfer.getData('text/plain');
-            displayPreview(src, 'image/gif', 'GIF');
-        });
-    
-        function displayPreview(src, type, name) {
-            let previewContainer = document.getElementById('previewContainer');
-    
-            // Create media element
-            let mediaElement;
-    
-            if (type.startsWith('image/')) {
-                mediaElement = document.createElement('img');
-                mediaElement.src = src;
-                mediaElement.alt = name; // Set the alt text
-            } else if (type.startsWith('video/')) {
-                mediaElement = document.createElement('video');
-                mediaElement.src = src;
-                mediaElement.controls = true;
-                mediaElement.width = 200; // Adjust width as needed
-            } else if (type.startsWith('audio/')) {
-                mediaElement = document.createElement('audio');
-                mediaElement.src = src;
-                mediaElement.controls = true;
-            } else {
-                mediaElement = document.createElement('iframe');
-                mediaElement.src = src;
-                mediaElement.width = '100%';
-                mediaElement.height = '200px'; // Adjust height as needed
-            }
-    
-            mediaElement.className = 'preview-cont-disp'; // Add the class for styling
-    
-            previewContainer.appendChild(mediaElement);
-            previewContainer.style.display = 'flex'; // Show the preview container
-        }
-    
+<script>
         // Check if session is active
-        var loggedInUser = localStorage.getItem('loggedInUser');
-        if (!loggedInUser) {
-            // Redirect to index.html if session is not active
-            window.location.href = "index.html";
+var loggedInUser = localStorage.getItem('loggedInUser');
+if (!loggedInUser) {
+    // Redirect to index.html if session is not active
+    window.location.href = "index.html";
+}
+
+// Function to unset session
+function unsetSession() {
+    // Display confirmation dialog
+    var confirmLogout = confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+        localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+        window.location.href = "index.html"; // Redirect to index.html after unsetting session
+    }
+}
+
+// Function to toggle the log menu
+function toggleLogMenu() {
+    var logMenu = document.getElementById('logMenu');
+    if (logMenu.style.display === 'none' || logMenu.style.display === '') {
+        logMenu.style.display = 'block'; // Show the log menu
+    } else {
+        logMenu.style.display = 'none'; // Hide the log menu
+    }
+}
+
+// Close the log menu when clicking outside of it
+window.onclick = function (event) {
+    if (!event.target.matches('.user-button') && !event.target.matches('.user-icon')) {
+        var logMenu = document.getElementById('logMenu');
+        if (logMenu.style.display === 'block') {
+            logMenu.style.display = 'none'; // Hide the log menu
         }
-    
-        // Function to unset session
-        function unsetSession() {
-            // Display confirmation dialog
-            var confirmLogout = confirm("Are you sure you want to log out?");
-            if (confirmLogout) {
-                localStorage.removeItem('loggedInUser');
-                window.location.href = "index.html"; // Redirect to index.html after unsetting session
-            }
-        }
-    
-        // Function to toggle the log menu
-        function toggleLogMenu() {
-            var logMenu = document.getElementById('logMenu');
-            if (logMenu.style.display === 'none' || logMenu.style.display === '') {
-                logMenu.style.display = 'block';
-            } else {
-                logMenu.style.display = 'none';
-            }
-        }
-    
-        // Close the log menu when clicking outside of it
-        window.onclick = function (event) {
-            if (!event.target.matches('.user-button') && !event.target.matches('.user-icon')) {
-                var logMenu = document.getElementById('logMenu');
-                if (logMenu.style.display === 'block') {
-                    logMenu.style.display = 'none';
-                }
-            }
-        }
-    </script>
-    
-    <script>
-        let giphyContainer = document.querySelector('.giphy');
-        let isDragging = false;
-        let startX, startY, initialLeft, initialTop;
-    
-        // Function to handle dragging
-        function handleMouseDown(event) {
-            if (event.target.closest('.search-iframe') || event.target.closest('.preview-container')) {
-                // Do not start dragging if interacting with child elements
-                return;
-            }
-    
-            // Start dragging
-            isDragging = true;
-            startX = event.clientX;
-            startY = event.clientY;
-            initialLeft = parseInt(window.getComputedStyle(giphyContainer).left, 10);
-            initialTop = parseInt(window.getComputedStyle(giphyContainer).top, 10);
-    
-            // Prevent text selection during drag
-            event.preventDefault();
-        }
-    
-        // Function to handle dragging movement
-        function handleMouseMove(event) {
-            if (isDragging) {
-                // Calculate new position
-                let dx = event.clientX - startX;
-                let dy = event.clientY - startY;
-                giphyContainer.style.left = `${initialLeft + dx}px`;
-                giphyContainer.style.top = `${initialTop + dy}px`;
-            }
-        }
-    
-        // Function to handle drag end
-        function handleMouseUp() {
-            isDragging = false;
-        }
-    
-        // Add event listeners for drag functionality
-        giphyContainer.addEventListener('mousedown', handleMouseDown);
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
-    </script>
+    }
+}
+</script>
     
 </body>
-
 </html>
