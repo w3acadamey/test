@@ -178,14 +178,6 @@ body {
     width: 26px;
     margin-bottom: 2%;
 }
-.preview-cont-disp {
-    margin-top:2%;
-    margin-left: 2%;
-    max-width: auto; /* Ensure it does not exceed container width */
-    min-height: 150px; /* Ensure it does not exceed container height */
-    display: inline-block; /* Keep items inline for horizontal scrolling */
-}
-
 /* Styles for the container of smiley emojis */
 .smiley-container {
     position: absolute;
