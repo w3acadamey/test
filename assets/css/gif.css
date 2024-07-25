@@ -168,6 +168,27 @@
         cursor: pointer;
         z-index: 10000; /* Ensure it's above other elements */
     }
+    .lock-icon
+    {
+        margin-left: 1%;
+        position: absolute;
+        font-size: 20px;
+        top:3%;
+        left: 10%;
+        color: #fff; /* White color for the icon */
+        cursor: pointer;
+        z-index: 10000; /* Ensure it's above other elements */
+    }
+    .reset-icon {
+        position: absolute;
+        left:5%;
+        font-size: 18px;
+        top:3.2%;
+        color: #fff; /* White color for the icon */
+        cursor: pointer;
+        z-index: 10000; /* Ensure it's above other elements */
+    }
+    
     .preview-cont-disp {
         margin-top:2%;
         margin-left: 2%;
