@@ -131,8 +131,7 @@ function displayPreview(src, type, name) {
     previewContainer.style.display = 'flex'; // Show the preview container
 }
 
-
-//Resizing Part
+// Resizing and Draggable Part
 document.addEventListener('DOMContentLoaded', function () {
     const giphy = document.querySelector('.giphy');
     const control = document.querySelector('.Controll');
@@ -142,6 +141,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchButton = document.querySelector('.search-iframe button');
     const closeIcon = document.querySelector('.close-icon');
     const gifMinIcon = document.querySelector('.gif-min');
+    const lockIcon = document.querySelector('.lock-icon');
+    const resetIcon = document.querySelector('.reset-icon');
     const resizeAreaSize = 10; // Size of the resizing area in pixels
 
     function adjustSizes() {
@@ -160,6 +161,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const iconSize = giphyHeight * 0.03; // Example ratio for icon size
         closeIcon.style.fontSize = `${iconSize}px`;
         gifMinIcon.style.fontSize = `${iconSize}px`;
+        lockIcon.style.fontSize = `${iconSize}px`;
+        resetIcon.style.fontSize = `${iconSize}px`;
 
         // Adjust input and button sizes proportionally
         inputField.style.fontSize = `${iconSize * 0.6}px`;
@@ -248,8 +251,68 @@ document.addEventListener('DOMContentLoaded', function () {
         giphy.addEventListener('mousedown', startDrag);
         giphy.addEventListener('touchstart', startDrag);
     }
-
     makeResizableDiv();
     makeDraggable();
     adjustSizes();
+});
+
+
+//toggle giphy Container
+document.addEventListener('DOMContentLoaded', function () {
+    // Get references to the media button and containers
+    const mediaButton = document.querySelector('.media-img');
+    const fileContainer = document.getElementById('fileContainer');
+    const giphyContainer = document.querySelector('.giphy');
+    const control = document.querySelector('.Controll');
+    const searchIframe = document.querySelector('.search-iframe');
+    const previewContainer = document.querySelector('.preview-container');
+    
+    // Get references to the icons
+    const closeIcon = document.querySelector('.close-icon');
+    const gifMinIcon = document.querySelector('.gif-min');
+    const lockIcon = document.querySelector('.lock-icon');
+    const resetIcon = document.querySelector('.reset-icon');
+
+    // Function to adjust sizes based on the .giphy container
+    function adjustSizes() {
+        const giphyHeight = giphyContainer.clientHeight;
+        const giphyWidth = giphyContainer.clientWidth;
+
+        // Adjust sizes for the .Controll, .search-iframe, and .preview-container
+        control.style.height = `${giphyHeight * 0.05}px`;
+        control.style.width = `${giphyWidth * 0.94}px`;
+
+        searchIframe.style.height = `${giphyHeight * 0.56}px`;
+        searchIframe.style.width = `${giphyWidth * 0.90}px`;
+
+        previewContainer.style.height = `${giphyHeight * 0.25}px`;
+        previewContainer.style.width = `${giphyWidth * 0.90}px`;
+
+        // Adjust icon sizes based on the .giphy container size
+        const iconSize = giphyHeight * 0.03; // Example ratio for icon size
+        closeIcon.style.fontSize = `${iconSize}px`;
+        gifMinIcon.style.fontSize = `${iconSize}px`;
+        lockIcon.style.fontSize = `${iconSize}px`;
+        resetIcon.style.fontSize = `${iconSize}px`;
+
+        // Adjust input and button sizes proportionally
+        const inputField = document.querySelector('.search-iframe input[type="text"]');
+        const searchButton = document.querySelector('.search-iframe button');
+
+        inputField.style.fontSize = `${iconSize * 0.6}px`;
+        searchButton.style.fontSize = `${iconSize * 0.6}px`;
+        searchButton.style.padding = `${iconSize * 0.3}px ${iconSize * 0.6}px`;
+    }
+
+    // Function to toggle visibility of containers and apply CSS styles
+    function toggleContainers() {
+        fileContainer.style.display = 'none'; // Hide the file container
+        giphyContainer.style.display = 'block'; // Show the giphy container
+
+        // Apply CSS styles for the giphy container's children
+        adjustSizes(); // Call adjustSizes to apply ratio-based sizes
+    }
+
+    // Add click event listener to the media button
+    mediaButton.addEventListener('click', toggleContainers);
 });
