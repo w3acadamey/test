@@ -1,0 +1,233 @@
+    /* Styles for the giphy container */
+    .giphy {
+        position: fixed;
+        top: 10px;
+        width: 37%;
+        height: 700px;
+        background-color: #000; /* Black background color */
+        border: 2px solid #595659; /* Border color */
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 9999;
+    }
+
+    /* Styles for the search-iframe */
+    .search-iframe {
+        top: 1%;
+        left: 3%;
+        width: 90%;
+        height: 56%;
+        background-color: #2C2B2C;
+        border: 2px solid #595659;
+        border-radius: 15px;
+        padding: 10px;
+        position: relative; /* Ensure button is positioned relative to this container */
+        overflow-y: auto; /* Add vertical scroll bar */
+    }
+
+    .search-iframe input[type="text"] {
+        width: 70%;
+        padding: 5px;
+        border-radius: 10px;
+        border: none;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+    .search-iframe button {
+        padding: 5px 10px;
+        border-radius: 10px;
+        border: none;
+        background-color: white;
+        color: #000000;
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        margin-left: 7%;
+    }
+
+    .search-iframe::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .search-iframe::-webkit-scrollbar-thumb {
+        background-color: #595659;
+        border-radius: 3px;
+    }
+
+    /* Styles for the preview container */
+    .preview-container {
+        top: 3%;
+        left: 3%;
+        width: 90%;
+        height: 25%;
+        background-color: #2C2B2C;
+        border: 2px solid #595659;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: row; /* Arrange items horizontally */
+        overflow-x: auto; /* Allow horizontal scrolling if necessary */
+        padding: 10px;
+        position: relative;
+        bottom: 0;
+    }
+
+    .preview-container::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .preview-container::-webkit-scrollbar-thumb {
+        background-color: #595659;
+        border-radius: 3px;
+    }
+
+    .preview-container img,
+    .preview-container video,
+    .preview-container audio,
+    .preview-container iframe {
+        max-height: 100px;
+        margin-right: 10px;
+        border-radius: 10px;
+    }
+
+    /* Adjust the gif container styles */
+    .gif-container {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        overflow-y: auto;
+    }
+
+    .gif-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .gif-container::-webkit-scrollbar-thumb {
+        background-color: #595659;
+        border-radius: 3px;
+    }
+
+    .gif-container img {
+        max-width: 100px;
+        border-radius: 10px;
+        cursor: grab;
+    }
+
+    .load-more-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #595659;
+        color: white;
+        text-align: center;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 10px 0;
+    }
+
+    .load-more-btn:hover {
+        background-color: #7e7e7e;
+    }
+
+    .search-iframe input[type="text"],
+    .search-iframe button {
+        position: sticky; /* Sticky positioning */
+        top: 10px; /* Adjust as needed */
+    }
+    .Controll
+    {
+        margin-top:2%;
+        margin-left:3%;
+        width: 93%;
+        height: 5%;
+        background-color: #2C2B2C;
+        border: 2px solid #595659;
+        border-radius: 15px;
+    }
+    .close-icon {
+        position: absolute;
+        font-size: 20px;
+        top:3%;
+        right: 5%;
+        color: #fff; /* White color for the icon */
+        cursor: pointer;
+        z-index: 10000; /* Ensure it's above other elements */
+    }
+    .gif-min
+    {
+        position: absolute;
+        font-size: 20px;
+        top:3%;
+        right: 10%;
+        color: #fff; /* White color for the icon */
+        cursor: pointer;
+        z-index: 10000; /* Ensure it's above other elements */
+    }
+    .preview-cont-disp {
+        margin-top:2%;
+        margin-left: 2%;
+        max-width: auto; /* Ensure it does not exceed container width */
+        min-height: 150px; /* Ensure it does not exceed container height */
+        display: inline-block; /* Keep items inline for horizontal scrolling */
+    }
+    /* Mobile view styles */
+    @media (max-width: 768px) {
+        .giphy {
+            width: 90%;
+            height: 600px;
+            top: 5px;
+        }
+
+        .search-iframe {
+            width: 90%;
+            height: 52%;
+            top: 1%;
+            left: 2%;
+        }
+
+        .search-iframe input[type="text"] {
+            width: 65%;
+            left: 5%;
+        }
+
+        .search-iframe button {
+            right: 5%;
+            margin-left: 8%;
+        }
+
+        .preview-container {
+            width: 90%;
+            height: 28%;
+            top: 3%;
+            left: 2%;
+        }
+
+        .preview-container img,
+        .preview-container video,
+        .preview-container audio,
+        .preview-container iframe {
+            max-height: 80px;
+        }
+        .Controll{
+            width: 94%;
+        }
+        .close-icon {
+            font-size: 15px;
+            top:2.5%;
+            right: 5%;
+        }
+        .gif-min
+        {
+            font-size: 15px;
+            top:2.5%;
+            right: 10%;
+        }
+        .preview-cont-disp {
+            min-height: 100px; /* Ensure it does not exceed container height */
+        }
+    }
