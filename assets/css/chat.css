@@ -396,8 +396,8 @@ body {
     .file-container{
         margin-bottom: 6%;
         min-height:6%;
-        min-width: 36%;
-        max-width: 40%;
+        min-width: 55%;
+        max-width: 55%;
     }
     .file-container a
     {
@@ -408,9 +408,12 @@ body {
         height: 50px;
         width: 50px;
     }
-    
     .view-img {
         height: 50px; /* Example height for the view image */
         width: 50px; /* Example width for the view image */
+    }
+    .media-img{
+        height: 50px;
+        width: 50px;
     }
 }
