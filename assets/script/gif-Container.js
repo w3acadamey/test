@@ -122,14 +122,71 @@ function displayPreview(src, type, name) {
         mediaElement.height = '200px'; // Adjust height as needed
     }
 
-    mediaElement.className = 'preview-cont-disp'; // Add the class for styling
-    mediaElement.addEventListener('click', function () {
-        this.remove(); // Remove the preview on click
+    const mediaWrapper = document.createElement('div'); // Wrapper for media and trash icon
+    mediaWrapper.className = 'preview-cont-disp'; // Add class for styling
+    mediaWrapper.style.position = 'relative'; // Set position to relative for trash icon positioning
+    mediaWrapper.style.overflow = 'visible'; // Allow trash icon to be outside the wrapper
+
+    // Create trash icon element
+    const trashIcon = document.createElement('img');
+    trashIcon.src = './assets/images/Gif-Trash.png'; // Set trash icon source
+    trashIcon.style.position = 'absolute'; // Position trash icon
+    trashIcon.style.top = '-8px'; // Position slightly outside the top-right corner
+    trashIcon.style.right = '-8px';
+    trashIcon.style.width = '30px'; // Set width and height
+    trashIcon.style.height = '30px';
+    trashIcon.style.cursor = 'pointer'; // Change cursor to pointer
+    trashIcon.addEventListener('click', function () {
+        mediaWrapper.remove(); // Remove the mediaWrapper on trash icon click
     });
 
-    previewContainer.appendChild(mediaElement); // Append the media element to the preview container
+    mediaWrapper.appendChild(mediaElement); // Append media element to wrapper
+    mediaWrapper.appendChild(trashIcon); // Append trash icon to wrapper
+    previewContainer.appendChild(mediaWrapper); // Append wrapper to preview container
     previewContainer.style.display = 'flex'; // Show the preview container
 }
+//adds the Send-Gif Button
+// Function to add or remove the plane.png image based on the presence of GIFs in the previewContainer
+function updatePlaneImage() {
+    let previewContainer = document.getElementById('previewContainer'); // Get preview container
+
+    // Check if there's at least one GIF in the preview container
+    let hasGif = Array.from(previewContainer.children).some(child => child.querySelector('img[src*=".gif"]'));
+
+    // If the plane image already exists, remove it
+    let existingPlane = document.getElementById('gif-snd');
+    if (existingPlane) {
+        if (!hasGif) {
+            existingPlane.remove();
+        }
+        return; // No need to add the plane image if it already exists and we are removing it
+    }
+
+    // If there's at least one GIF, add the plane image
+    if (hasGif) {
+        const planeImage = document.createElement('img');
+        planeImage.src = './assets/images/Gif-Send.png'; // Set plane image source
+        planeImage.className = 'gif-snd'; // Set class for future use
+        planeImage.id = 'gif-snd'; // Set id for future use
+        planeImage.style.position = 'absolute'; // Positioning
+        planeImage.style.bottom = '8px'; // Distance from the bottom
+        planeImage.style.right = '8px'; // Distance from the right
+        planeImage.style.width = '40px'; // Adjust width as needed
+        planeImage.style.height = '40px'; // Adjust height as needed
+        planeImage.style.zIndex = '1000'; // Ensure it's on top of other content
+        previewContainer.style.position = 'relative'; // Ensure the preview container is positioned relative
+        previewContainer.appendChild(planeImage); // Append plane image to preview container
+    }
+}
+
+// Set up MutationObserver to monitor changes in the preview container
+const observer = new MutationObserver(updatePlaneImage);
+
+// Start observing the preview container for child list changes
+observer.observe(document.getElementById('previewContainer'), { childList: true });
+
+// Initial check
+updatePlaneImage();
 
 // Resizing and Draggable Part
 document.addEventListener('DOMContentLoaded', function () {
